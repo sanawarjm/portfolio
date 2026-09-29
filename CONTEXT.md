@@ -250,6 +250,11 @@ at Production. Vercel's default is the reverse (apex redirects to www) — it wa
 deliberately flipped, because the bare domain reads better on a resume. If a Vercel
 dialog re-checks "Redirect apex domains to www", uncheck it.
 
+**Web Analytics:** Vercel Web Analytics is wired in via the plain-HTML snippet at
+the very bottom of `index.html` (`/_vercel/insights/script.js`). It is cookieless and
+needs no package or build step. Do not replace it with `@vercel/analytics` — that
+needs a bundler this project does not have.
+
 **Rollback:** every past deployment is kept. On the Deployments page, use
 *Promote to Production* on the last good one.
 
