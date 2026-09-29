@@ -30,6 +30,12 @@
     text-size-adjust:100%;
   }
   .wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:24px}
+  /* nothing may push the page wider than the screen */
+  html{overflow-x:clip}
+  body{overflow-x:clip;max-width:100%}
+  .intro-grid > *,.outside-grid > *,.figrow > *,.gal-grid > *,
+  .exp-grid > *,.collage-grid > *{min-width:0}
+  img,video{max-width:100%}
   .wrap.narrow{max-width:860px}
   a{color:inherit}
   img{display:block;width:100%;height:auto}
@@ -105,6 +111,7 @@
       background:#000;
       padding:6px 24px 18px;
       box-shadow:0 22px 44px rgba(0,0,0,.7);
+      max-height:calc(100vh - 56px);
       max-height:calc(100dvh - 56px);overflow-y:auto;
       opacity:0;visibility:hidden;transform:translateY(-8px);
       transition:opacity .2s ease,transform .2s ease,visibility .2s;
@@ -227,7 +234,7 @@
 
   /* ---------------- experience ---------------- */
   .exp-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));
     gap:clamp(34px,5vw,64px);margin-top:clamp(36px,5vw,60px);text-align:center;
   }
   .exp h3{
@@ -250,7 +257,7 @@
   .gallery::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.78)}
   .gallery > *{position:relative;z-index:1}
   .gal-grid{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));
     gap:clamp(40px,5vw,72px);margin-top:clamp(36px,5vw,58px);
   }
   /* the cards are a flex column and the blurb takes up the slack, so the
@@ -316,13 +323,13 @@
   .prose em{font-family:var(--serif);font-size:1.06em}
 
   .facts{margin:20px 0 0;display:grid;gap:9px}
-  .facts .row{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:18px}
+  .facts .row{display:grid;grid-template-columns:minmax(120px,170px) minmax(0,1fr);gap:18px}
   .facts .k{font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);padding-top:3px}
   .facts .v{color:var(--soft)}
 
   /* every image in a row sits in a box of the same shape, so tops, bottoms
      and the captions under them line up across the row */
-  .figrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:clamp(30px,4vw,44px) 0 0}
+  .figrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr));gap:18px;margin:clamp(30px,4vw,44px) 0 0}
   .figrow figure{display:flex;flex-direction:column;min-width:0}
   .figrow img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover}
   /* charts, sketches and CAD renders get shown whole rather than cropped;
@@ -331,7 +338,7 @@
   a.gal .shot.doc{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center}
   a.gal .shot.doc img{height:100%;width:auto;max-width:100%;object-fit:contain}
   /* phone screenshots: a tall box, same shape for all four */
-  .figrow.four{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px}
+  .figrow.four{grid-template-columns:repeat(auto-fit,minmax(min(140px,100%),1fr));gap:14px}
   .figrow.four img{aspect-ratio:9/16;object-fit:contain}
   .prose figure.wide{margin:clamp(30px,4vw,46px) 0 0}
   .prose figure.wide img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
@@ -385,7 +392,7 @@
 
   @media (max-width:980px){
     .collage-grid{grid-template-columns:repeat(4,1fr)}
-    .outside-grid{grid-template-columns:1fr}
+    .outside-grid{grid-template-columns:minmax(0,1fr)}
     .outside-grid p{max-width:none}
   }
   @media (max-width:820px){
@@ -513,10 +520,23 @@
   :focus-visible{outline:1px solid #fff;outline-offset:4px}
 
   @media (max-width:820px){
-    .intro-grid{grid-template-columns:1fr}
-    .collage{height:auto;grid-template-rows:auto auto}
-    .collage .a,.collage .d{aspect-ratio:16/11;height:auto}
-    .facts .row{grid-template-columns:1fr;gap:2px}
+    .intro-grid{grid-template-columns:minmax(0,1fr)}
+    /* Stacked, the collage becomes four equal tiles. The desktop layout leans
+       on height:100% to match the text column, which is only meaningful when
+       the row height is definite — in an auto row Safari resolves it to the
+       image's intrinsic height, so the pictures grew and overlapped the
+       section below. Explicit ratios here, no percentage heights. */
+    .collage{
+      height:auto;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      grid-template-rows:auto auto;
+    }
+    .collage img{height:auto;aspect-ratio:1/1;object-fit:cover}
+    .collage .a{grid-area:1 / 1 / 2 / 2}
+    .collage .b{grid-area:1 / 2 / 2 / 3}
+    .collage .c{grid-area:2 / 1 / 3 / 2}
+    .collage .d{grid-area:2 / 2 / 3 / 3}
+    .facts .row{grid-template-columns:minmax(0,1fr);gap:2px}
     .facts .k{padding-top:0}
   }
 
