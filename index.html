@@ -1,0 +1,1427 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Sanawar J. Malik</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=Jost:wght@300;400;500;600&display=swap">
+<style>
+  :root{
+    color-scheme: dark;
+    --bg:#000;
+    --ink:#fff;
+    --soft:rgba(255,255,255,.80);
+    --muted:rgba(255,255,255,.58);
+    --dim:rgba(255,255,255,.38);
+    --serif:"EB Garamond",Georgia,"Times New Roman",serif;
+    --sans:"Jost","Helvetica Neue",Arial,sans-serif;
+    --wrap:1240px;
+  }
+  *{box-sizing:border-box}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-weight:300;
+    font-size:15px;
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:24px}
+  .wrap.narrow{max-width:860px}
+  a{color:inherit}
+  img{display:block;width:100%;height:auto}
+
+  /* ---------------- nav ---------------- */
+  .nav{
+    position:sticky;
+    top:env(safe-area-inset-top, 0px);
+    z-index:60;
+    background:rgba(0,0,0,.86);
+    backdrop-filter:blur(8px);
+  }
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:20px;min-height:52px;flex-wrap:wrap;padding-block:8px;
+  }
+  .mark{
+    font-family:var(--serif);font-size:1.05rem;letter-spacing:.22em;
+    text-transform:uppercase;text-decoration:none;white-space:nowrap;
+  }
+  .nav ul{display:flex;gap:22px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+  .nav a.link{
+    font-size:.7rem;font-weight:500;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--soft);text-decoration:none;
+    transition:color .18s;white-space:nowrap;
+  }
+  .nav a.link:hover{color:#fff}
+
+  /* Projects opens on hover, and on keyboard focus so it is not mouse-only */
+  .nav li.has-menu{position:relative}
+  .nav li.has-menu > a.link::after{
+    content:"";display:inline-block;width:4px;height:4px;margin-left:7px;
+    border-right:1px solid currentColor;border-bottom:1px solid currentColor;
+    transform:translateY(-2px) rotate(45deg);
+  }
+  .nav ul.menu{
+    position:absolute;top:100%;left:-18px;z-index:70;
+    display:block;min-width:220px;
+    margin:0;padding:16px 18px 14px;
+    background:rgba(0,0,0,.96);
+    backdrop-filter:blur(10px);
+    box-shadow:0 22px 44px rgba(0,0,0,.7);
+    opacity:0;visibility:hidden;transform:translateY(-6px);
+    transition:opacity .18s ease,transform .18s ease,visibility .18s;
+  }
+  .nav li.has-menu:hover > ul.menu,
+  .nav li.has-menu:focus-within > ul.menu{
+    opacity:1;visibility:visible;transform:translateY(0);
+  }
+  .nav ul.menu a.link{display:block;padding:7px 0;color:var(--muted)}
+  .nav ul.menu a.link::after{content:none}
+  /* no room for a panel on a phone, and nothing to hover with: Projects just
+     goes to the gallery, which lists the same five */
+  @media (hover:none),(max-width:820px){
+    .nav ul.menu{display:none}
+    .nav li.has-menu > a.link::after{content:none}
+  }
+
+  /* ---------------- hero ---------------- */
+  .hero{padding-top:clamp(52px,9vw,110px);padding-bottom:0;text-align:center}
+  .hero .welcome{
+    font-family:var(--serif);font-size:clamp(.82rem,1.5vw,1rem);
+    letter-spacing:.42em;text-transform:uppercase;color:var(--soft);margin:0;
+  }
+  .hero h1{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(1.7rem,5.2vw,3.4rem);
+    letter-spacing:.2em;text-transform:uppercase;
+    margin:clamp(18px,2.5vw,30px) 0 0;line-height:1.25;text-wrap:balance;
+  }
+  .hero .role{
+    font-size:.74rem;font-weight:400;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--dim);margin:22px 0 0;
+  }
+  .hero figure{margin:clamp(24px,4vw,46px) 0 0}
+  .hero figure img{max-width:840px;margin-inline:auto}
+
+  /* ---------------- generic section ---------------- */
+  section{padding-block:clamp(56px,9vw,112px)}
+  .eyebrow{
+    font-size:.72rem;font-weight:600;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ink);margin:0;
+  }
+  h2.big{
+    font-family:var(--sans);font-weight:300;
+    font-size:clamp(2rem,5.6vw,3.6rem);letter-spacing:-.005em;
+    margin:14px 0 0;line-height:1.1;text-wrap:balance;
+  }
+  h2.centre{text-align:center;margin-inline:auto}
+
+  /* ---------------- intro ---------------- */
+  .intro-grid{
+    display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:clamp(30px,5vw,70px);align-items:stretch;
+  }
+  .intro-copy p{margin:22px 0 0;color:var(--soft);max-width:62ch}
+  /* two rows, each a wide picture beside a narrow one. The wide one sets the
+     row height and the narrow one fills it, so every edge is on a straight
+     line with no stagger */
+  /* two equal rows filling the full height of the writing beside it, so the
+     block starts and ends on the same lines as the text and every edge meets */
+  .collage{
+    display:grid;grid-template-columns:repeat(6,1fr);
+    grid-template-rows:1fr 1fr;gap:12px;height:100%;
+  }
+  .collage img{object-fit:cover;width:100%;height:100%;min-height:0}
+  .collage .a{grid-area:1 / 1 / 2 / 5}
+  .collage .b{grid-area:1 / 5 / 2 / 7}
+  .collage .c{grid-area:2 / 1 / 3 / 3}
+  .collage .d{grid-area:2 / 3 / 3 / 7}
+
+  .channels{
+    display:flex;flex-wrap:wrap;gap:clamp(26px,4vw,56px);margin-top:clamp(32px,4vw,50px);
+  }
+  .ch .lbl{
+    display:block;font-size:.7rem;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ink);margin-bottom:4px;
+  }
+  .ch .val{font-size:.9rem;color:var(--soft);text-decoration:underline;text-underline-offset:3px}
+  .ch a.val:hover{color:#fff}
+  .copy{
+    display:block;margin-top:8px;font-family:var(--sans);font-size:.66rem;
+    font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+    background:none;border:0;padding:0;color:var(--dim);cursor:pointer;
+  }
+  .copy:hover{color:#fff}
+
+  /* ---------------- feature panel ---------------- */
+  .feature{
+    position:relative;text-align:center;
+    padding-block:clamp(80px,13vw,180px);
+    background:#000 center/cover no-repeat;
+    text-decoration:none;display:block;
+  }
+  .feature::after{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(ellipse at center, rgba(0,0,0,.12) 0%, rgba(0,0,0,.72) 72%, #000 100%);
+  }
+  .feature > *{position:relative;z-index:1}
+  .feature .kicker{
+    font-size:.7rem;font-weight:600;letter-spacing:.24em;
+    text-transform:uppercase;color:var(--soft);margin:0;
+  }
+  .feature h2{
+    font-family:var(--sans);font-weight:300;
+    font-size:clamp(2.6rem,9vw,6rem);letter-spacing:-.01em;
+    margin:16px 0 0;line-height:1;
+  }
+  .feature .roles{
+    font-size:.82rem;font-weight:400;letter-spacing:.1em;
+    color:var(--soft);margin:18px auto 0;max-width:46ch;
+  }
+  .feature .invite{
+    font-family:var(--serif);font-style:italic;font-size:1rem;
+    color:var(--muted);margin:26px 0 0;
+  }
+  .feature:hover .invite{color:#fff}
+
+  /* ---------------- experience ---------------- */
+  .exp-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:clamp(34px,5vw,64px);margin-top:clamp(36px,5vw,60px);text-align:center;
+  }
+  .exp h3{
+    font-family:var(--sans);font-weight:600;font-size:1.02rem;
+    letter-spacing:.02em;margin:0 0 4px;
+  }
+  .exp .when{
+    font-size:.7rem;font-weight:400;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--dim);margin:0 0 16px;
+  }
+  .exp p{margin:0 0 14px;color:var(--soft)}
+  .exp p:last-child{margin-bottom:0}
+
+  /* ---------------- project gallery ---------------- */
+  .gallery{
+    position:relative;
+    background:#000 center/cover no-repeat;
+    padding-block:clamp(60px,9vw,110px);
+  }
+  .gallery::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.78)}
+  .gallery > *{position:relative;z-index:1}
+  .gal-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:clamp(40px,5vw,72px);margin-top:clamp(36px,5vw,58px);
+  }
+  /* the cards are a flex column and the blurb takes up the slack, so the
+     picture starts at the same height in every card of a row however long
+     the description runs */
+  a.gal{display:flex;flex-direction:column;text-decoration:none;text-align:center}
+  a.gal h3{
+    font-family:var(--sans);font-weight:600;font-size:1.06rem;
+    margin:0;text-decoration:underline;text-underline-offset:5px;
+  }
+  a.gal .when{
+    font-size:.68rem;font-weight:400;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--dim);margin:8px 0 14px;
+  }
+  a.gal p{margin:0;color:var(--soft)}
+  a.gal p:not(.when){flex:1 0 auto}
+  a.gal .shot{margin-top:20px;aspect-ratio:16/10;overflow:hidden}
+  a.gal .shot img{height:100%;object-fit:cover;transition:transform .5s ease}
+  a.gal:hover .shot img{transform:scale(1.04)}
+  a.gal .open{
+    display:inline-block;margin-top:16px;font-size:.68rem;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  }
+  a.gal:hover .open{color:#fff}
+
+  /* ---------------- detail pages ---------------- */
+  .dhead{text-align:center;padding-top:clamp(40px,6vw,76px);padding-bottom:clamp(30px,4vw,50px)}
+  .back{
+    font-size:.68rem;font-weight:500;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted);text-decoration:none;
+  }
+  .back:hover{color:#fff}
+  .dhead .when{
+    font-size:.7rem;font-weight:400;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--dim);margin:24px 0 0;
+  }
+  .dhead h1{
+    font-family:var(--sans);font-weight:300;
+    font-size:clamp(2.4rem,7.5vw,4.6rem);letter-spacing:-.015em;
+    margin:12px 0 0;line-height:1.02;
+  }
+  .dhead .lede{
+    font-family:var(--serif);font-size:clamp(1.1rem,2.2vw,1.45rem);
+    font-style:italic;color:var(--soft);max-width:44ch;
+    margin:22px auto 0;line-height:1.5;
+  }
+  .dhead .stack{
+    font-size:.7rem;font-weight:400;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--dim);margin:24px 0 0;
+  }
+
+  .prose h3{
+    font-family:var(--sans);font-weight:600;font-size:1.06rem;
+    letter-spacing:.02em;margin:clamp(40px,5vw,60px) 0 0;
+  }
+  .prose h3:first-child{margin-top:0}
+  .prose p{margin:16px 0 0;color:var(--soft)}
+  .prose ul{margin:16px 0 0;padding-left:18px;color:var(--soft)}
+  .prose li{margin-bottom:10px}
+  .prose li:last-child{margin-bottom:0}
+  .prose strong{font-weight:600;color:var(--ink)}
+  .prose code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.88em;color:var(--ink)}
+  .prose em{font-family:var(--serif);font-size:1.06em}
+
+  .facts{margin:20px 0 0;display:grid;gap:9px}
+  .facts .row{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:18px}
+  .facts .k{font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);padding-top:3px}
+  .facts .v{color:var(--soft)}
+
+  /* every image in a row sits in a box of the same shape, so tops, bottoms
+     and the captions under them line up across the row */
+  .figrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:clamp(30px,4vw,44px) 0 0}
+  .figrow figure{display:flex;flex-direction:column;min-width:0}
+  .figrow img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover}
+  /* charts, sketches and CAD renders get shown whole rather than cropped;
+     the box stays the same shape and the letterboxing is invisible on black */
+  .figrow figure.doc img{object-fit:contain}
+  a.gal .shot.doc{aspect-ratio:16/10;display:flex;align-items:center;justify-content:center}
+  a.gal .shot.doc img{height:100%;width:auto;max-width:100%;object-fit:contain}
+  /* phone screenshots: a tall box, same shape for all four */
+  .figrow.four{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px}
+  .figrow.four img{aspect-ratio:9/16;object-fit:contain}
+  .prose figure.wide{margin:clamp(30px,4vw,46px) 0 0}
+  .prose figure.wide img{width:100%;height:auto;aspect-ratio:auto;object-fit:contain}
+  .prose figcaption{
+    font-size:.68rem;font-weight:400;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim);margin-top:10px;
+  }
+  figure{margin:0}
+
+  /* ---------------- outside of work ---------------- */
+  .lede-wide{
+    font-family:var(--serif);font-size:clamp(1.05rem,2vw,1.35rem);
+    font-style:italic;color:var(--soft);max-width:52ch;
+    margin:22px 0 0;line-height:1.55;
+  }
+  .life{margin-top:clamp(46px,6vw,78px)}
+  .life h3{
+    font-family:var(--sans);font-weight:600;font-size:1.06rem;
+    letter-spacing:.02em;margin:0;
+  }
+  .life > p{margin:14px 0 0;color:var(--soft);max-width:74ch}
+  .life .figrow.life-row{grid-template-columns:repeat(4,1fr);gap:16px;margin-top:clamp(22px,3vw,30px)}
+  .life .figrow.life-row img{aspect-ratio:4/5;object-fit:cover}
+
+  /* the leftovers, as one even block of squares */
+  .collage-grid{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:12px;
+    grid-auto-flow:dense;margin-top:clamp(22px,3vw,30px);
+  }
+  .collage-grid figure{margin:0;min-width:0}
+  .collage-grid img,
+  .collage-grid video{aspect-ratio:1/1;object-fit:cover;width:100%;height:auto;display:block}
+  /* both clips are shot upright, so they take a tall tile and the block still squares off */
+  .collage-grid figure.tall{grid-row:span 2}
+  .collage-grid figure.tall video{aspect-ratio:auto;height:100%;object-fit:cover}
+
+  /* home page teaser */
+  .outside-grid{
+    display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);
+    gap:clamp(30px,5vw,70px);align-items:center;
+  }
+  .outside-grid p{margin:22px 0 0;color:var(--soft);max-width:48ch}
+  .figrow.teaser{grid-template-columns:repeat(4,1fr);gap:12px;margin:0}
+  .figrow.teaser img{aspect-ratio:3/4;object-fit:cover}
+  a.more{
+    display:inline-block;font-size:.7rem;font-weight:500;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted);text-decoration:none;
+    border-bottom:1px solid rgba(255,255,255,.28);padding-bottom:4px;
+  }
+  a.more:hover{color:#fff;border-bottom-color:#fff}
+
+  @media (max-width:980px){
+    .collage-grid{grid-template-columns:repeat(4,1fr)}
+    .outside-grid{grid-template-columns:1fr}
+    .outside-grid p{max-width:none}
+  }
+  @media (max-width:820px){
+    .life .figrow.life-row{grid-template-columns:repeat(2,1fr)}
+    .collage-grid{grid-template-columns:repeat(3,1fr);gap:9px}
+  }
+  @media (max-width:520px){
+    .collage-grid{grid-template-columns:repeat(2,1fr)}
+  }
+
+  /* ---------------- carousel ---------------- */
+  .carousel{margin:clamp(30px,4vw,46px) 0 0}
+  .carousel .track{
+    position:relative; /* so slide offsetLeft is measured from the track */
+    display:flex;gap:16px;
+    overflow-x:auto;overscroll-behavior-x:contain;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;-ms-overflow-style:none;
+    padding-bottom:2px;
+  }
+  .carousel .track::-webkit-scrollbar{display:none}
+  .carousel .track > figure{
+    flex:0 0 100%;scroll-snap-align:start;min-width:0;
+  }
+  .carousel.tall .track > figure{flex-basis:min(64%,320px)}
+  /* the last frame in a peeking strip snaps to the right edge instead of the
+     left, so the strip ends flush rather than on a gap */
+  .carousel.tall .track > figure:last-child{scroll-snap-align:end}
+  .carousel .track img{width:100%;height:auto;display:block}
+  /* mixed portrait and landscape in one strip: one box of a fixed shape for
+     all of them, so every slide is the same height and the captions sit on
+     one line. Nothing is cropped; the margins are invisible on black */
+  .carousel:not(.tall) .track > figure{
+    display:flex;flex-direction:column;
+  }
+  .carousel:not(.tall) .track img{
+    width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;max-height:520px;
+  }
+  .carousel.tall .track img{aspect-ratio:3/4;object-fit:cover}
+  .carousel .step{
+    display:block;font-size:.66rem;font-weight:500;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--dim);margin-bottom:8px;
+  }
+  /* the label above stays a label; the line below is a sentence, so it reads
+     as one rather than shouting in caps like the plain figure captions do */
+  .carousel figcaption{
+    margin-top:14px;text-transform:none;letter-spacing:0;
+    font-size:.93rem;line-height:1.5;color:var(--soft);max-width:44ch;
+  }
+  .cbar{
+    display:flex;align-items:center;gap:20px;
+    margin-top:22px;
+  }
+  .cbar button{
+    background:none;border:0;padding:0;cursor:pointer;
+    font-family:var(--sans);font-size:1.5rem;line-height:1;
+    color:var(--muted);transition:color .18s;
+  }
+  .cbar button:hover:not(:disabled){color:#fff}
+  .cbar button:disabled{color:rgba(255,255,255,.16);cursor:default}
+  .cbar .count{
+    font-size:.68rem;font-weight:400;letter-spacing:.2em;
+    color:var(--dim);font-variant-numeric:tabular-nums;
+  }
+  .cbar .rail{
+    flex:1;height:1px;background:rgba(255,255,255,.16);position:relative;
+  }
+  .cbar .rail i{
+    position:absolute;inset-block:0;left:0;display:block;
+    background:#fff;transition:left .3s ease,width .3s ease;
+  }
+
+  /* ---------------- mosaic ---------------- */
+  .mosaic{
+    display:grid;grid-template-columns:repeat(6,1fr);
+    gap:12px;margin:clamp(30px,4vw,46px) 0 0;
+  }
+  .mosaic img{width:100%;height:100%;object-fit:cover;display:block}
+  .mosaic .m1{grid-column:span 4;aspect-ratio:16/11}
+  .mosaic .m2{grid-column:span 2;aspect-ratio:3/4}
+  .mosaic .m3{grid-column:span 2;aspect-ratio:3/4}
+  .mosaic .m4{grid-column:span 2;aspect-ratio:3/4}
+  .mosaic .m5{grid-column:span 2;aspect-ratio:3/4}
+  .mosaic .m6{grid-column:span 3;aspect-ratio:16/11}
+  .mosaic .m7{grid-column:span 3;aspect-ratio:16/11}
+  @media (max-width:640px){
+    .mosaic{grid-template-columns:repeat(2,1fr)}
+    .mosaic .m1,.mosaic .m6,.mosaic .m7{grid-column:span 2}
+    .mosaic .m2,.mosaic .m3,.mosaic .m4,.mosaic .m5{grid-column:span 1}
+  }
+
+  .outlinks{display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,40px);margin-top:clamp(34px,4vw,48px)}
+  .outlinks a{
+    font-size:.76rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;
+    text-decoration:underline;text-underline-offset:5px;color:var(--soft);
+  }
+  .outlinks a:hover{color:#fff}
+
+  .nextup{margin-top:clamp(56px,7vw,86px);text-align:center}
+  .nextup .lbl{font-size:.68rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+  .nextup a{
+    display:inline-block;margin-top:10px;font-family:var(--sans);font-weight:300;
+    font-size:clamp(1.6rem,4vw,2.4rem);text-decoration:none;
+  }
+  .nextup a:hover{text-decoration:underline;text-underline-offset:6px}
+
+  /* ---------------- closing ---------------- */
+  .closing{text-align:center;padding-block:clamp(66px,10vw,124px)}
+  .closing h2{
+    font-family:var(--sans);font-weight:300;
+    font-size:clamp(2rem,6vw,3.4rem);margin:14px 0 0;line-height:1.1;
+  }
+  .closing p{color:var(--soft);max-width:44ch;margin:20px auto 0}
+  .closing .channels{justify-content:center;text-align:center}
+
+  footer{padding-block:32px;text-align:center}
+  footer p{
+    margin:0;font-size:.68rem;font-weight:400;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--dim);
+  }
+
+  #intro,#experience,#projects,#contact{scroll-margin-top:64px}
+
+  :focus-visible{outline:1px solid #fff;outline-offset:4px}
+
+  @media (max-width:820px){
+    .intro-grid{grid-template-columns:1fr}
+    .collage{height:auto;grid-template-rows:auto auto}
+    .collage .a,.collage .d{aspect-ratio:16/11;height:auto}
+    .facts .row{grid-template-columns:1fr;gap:2px}
+    .facts .k{padding-top:0}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="mark" href="#home">Sanawar</a>
+    <ul>
+      <li><a class="link" href="#home">Home</a></li>
+      <li><a class="link" href="#intro">Intro</a></li>
+      <li class="has-menu">
+        <a class="link" href="#projects">Projects</a>
+        <ul class="menu">
+          <li><a class="link" href="#cleo">Cleo</a></li>
+          <li><a class="link" href="#unlockable">Unlockable</a></li>
+          <li><a class="link" href="#audio-scale">Audio Scale</a></li>
+          <li><a class="link" href="#airport">Airport Baggage System</a></li>
+          <li><a class="link" href="#wastewater">Wastewater Filtration</a></li>
+        </ul>
+      </li>
+      <li><a class="link" href="#experience">Experience</a></li>
+      <li><a class="link" href="#outside">Outside of work</a></li>
+      <li><a class="link" href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============================ HOME ============================ -->
+<div id="view-home">
+
+<header class="hero">
+  <div class="wrap">
+    <p class="welcome">Welcome to</p>
+    <h1>Sanawar J. Malik</h1>
+    <p class="role">Mechatronics Engineering &amp; Management &middot; McMaster University</p>
+    <figure>
+      <img src="img/hero-cad.jpg" alt="Greyscale CAD assembly of a four legged robot, its body and legs shown floating against a black background.">
+    </figure>
+  </div>
+</header>
+
+<section id="intro">
+  <div class="wrap">
+    <div class="intro-grid">
+      <div class="intro-copy">
+        <p class="eyebrow">Hi there</p>
+        <h2 class="big">A bit about me</h2>
+        <p>I'm Sanawar, a third-year Mechatronics Engineering and Management student at McMaster, currently on the co-op stream and based in Milton.</p>
+        <p>I've always liked building things I can actually see and use. Some of my projects include a PIN-controlled door lock using an ESP32, a kitchen scale that reads the weight out loud, and Cleo, a four-legged robot that my teammate Angelo and I somehow got walking in 72 hours at my first hackathon. I spend a lot of my time working with embedded systems and control logic, mostly because I enjoy the process of building something, testing it, realizing it doesn't work, and figuring out why.</p>
+        <p>This past summer, I worked as a software engineering intern at iA Auto Finance. I also co-founded Milton IB Tutors and currently teach at Oxford Learning. Teaching has honestly helped me a lot with engineering too. If you can explain something clearly to someone else, you probably understand it pretty well yourself.</p>
+        <p>Outside of school, I'm usually playing basketball or volleyball, and I'm always down for a pickup soccer game. I also like getting involved in the community through things like food drives, blood drives, and helping out around the neighbourhood when I can.</p>
+        <p>Right now, I'm looking for co-op and internship opportunities, especially in hardware, robotics, and embedded software. Keep scrolling if you want to see some of the things I've worked on.</p>
+      </div>
+
+      <div class="collage">
+        <img class="a" src="img/cleo.jpg" alt="The assembled Cleo robot standing on a carpet, showing its printed legs, servos, Raspberry Pi and webcam.">
+        <img class="b" src="img/cleo-face.jpg" alt="Close view of the small OLED display on the robot showing a simple animated face.">
+        <img class="c" src="img/unlockable.jpg" alt="The Unlockable door lock prototype mounted on a door, its LCD reading Enter Password.">
+        <img class="d" src="img/cleo-cad.jpg" alt="Autodesk Inventor assembly of the quadruped robot.">
+      </div>
+    </div>
+
+    <div class="channels">
+      <div class="ch">
+        <span class="lbl">Email</span>
+        <span class="val" id="email">sanawar.j@gmail.com</span>
+        <button class="copy" id="copyBtn" type="button">Copy</button>
+      </div>
+      <div class="ch">
+        <span class="lbl">LinkedIn</span>
+        <a class="val" href="https://www.linkedin.com/in/sanawar-javaid">linkedin.com/in/sanawar-javaid</a>
+      </div>
+      <div class="ch">
+        <span class="lbl">GitHub</span>
+        <a class="val" href="https://github.com/sanawarjm">github.com/sanawarjm</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<a class="feature" href="#cleo" style="background-image:url('img/feature-bg.jpg')">
+  <p class="kicker">Featured build &middot; BearHacks 2026</p>
+  <h2>Cleo</h2>
+  <p class="roles">An autonomous quadruped that hears you, looks at the room and decides what to do. Built with one teammate in 72 hours.</p>
+  <p class="invite">This one taught me the most. Click to see how it works.</p>
+</a>
+
+<div class="gallery" id="projects" style="background-image:url('img/gallery-bg.jpg')">
+  <div class="wrap">
+    <h2 class="big centre">Project gallery</h2>
+
+    <div class="gal-grid">
+
+      <a class="gal" href="#cleo">
+        <h3>Cleo</h3>
+        <p class="when">May 2026 &middot; BearHacks 2026</p>
+        <p>A four legged robot that takes a spoken instruction, looks at the room through its camera and works out what to do next. Speech recognition and object detection both run on the Pi itself, so it keeps working with the Wi-Fi off. My teammate and I had 72 hours, and it was my first hackathon.</p>
+        <figure class="shot"><img src="img/cleo.jpg" alt="The assembled quadruped robot standing on a carpet."></figure>
+        <span class="open">Read the full build</span>
+      </a>
+
+      <a class="gal" href="#unlockable">
+        <h3>Unlockable</h3>
+        <p class="when">March 2026 &middot; McMaster 2TA4</p>
+        <p>Six buttons, a servo and an LCD wired to an ESP32. Type the right four digits and the latch swings open. Get it wrong three times and the board locks you out for sixty seconds, counting down on the screen. I drew the six states and every transition between them before I wrote a line of firmware, which is why the countdown never blocks the main loop.</p>
+        <figure class="shot"><img src="img/unlockable.jpg" alt="The door lock prototype taped to a door with its LCD lit and a servo latch on the frame."></figure>
+        <span class="open">Read the full build</span>
+      </a>
+
+      <a class="gal" href="#audio-scale">
+        <h3>Audio Scale</h3>
+        <p class="when">Feb to Mar 2025 &middot; McMaster 1P13</p>
+        <p>A kitchen scale that says the weight out loud, built over six weeks for a client with combined vision and hearing loss who cooks every day. I owned the button interface: the circuit, the firmware behind the four functions, and the oversized printed caps with different textures so she could tell the buttons apart by feel.</p>
+        <figure class="shot"><img src="img/as-prototype.jpg" alt="The finished kitchen scale: a white weighing plate over a black enclosure, with four large yellow textured buttons along the front edge."></figure>
+        <span class="open">Read the full build</span>
+      </a>
+
+      <a class="gal" href="#airport">
+        <h3>Airport Baggage System</h3>
+        <p class="when">Oct to Dec 2024 &middot; McMaster 1P13</p>
+        <p>A baggage handling system for a simulated airport, mechanical and software together. My scissor lift ramp made it into the final assembly. On the software side I wrote the time delay function and the code that drove the Q-arm, and I coordinated the team of five.</p>
+        <figure class="shot"><img src="img/ap-cad.jpg" alt="CAD model of the baggage handling assembly: a black perforated frame with gears, a conveyor, a linear actuator and two red-edged platforms."></figure>
+        <span class="open">Read the full build</span>
+      </a>
+
+      <a class="gal" href="#wastewater">
+        <h3>Wastewater Filtration</h3>
+        <p class="when">Jan to Feb 2025 &middot; McMaster 1P13</p>
+        <p>Stripping ciprofloxacin out of hospital wastewater for a rural hospital in Byron Bay, Australia. I ran the material analysis: deriving the performance indices, working out how much porosity coir fibre could take before it stopped being strong enough, and rebuilding the Ashby chart to check my own answer.</p>
+        <figure class="shot doc"><img src="img/ww-mpi.jpg" alt="A page of handwritten derivations titled MPI Strength, working from mass and stress equations toward a material performance index."></figure>
+        <span class="open">Read the full build</span>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<section id="experience">
+  <div class="wrap">
+    <h2 class="big centre" style="max-width:20ch">Where I've worked</h2>
+
+    <div class="exp-grid">
+      <div class="exp">
+        <h3>Software Engineer Intern</h3>
+        <p class="when">iA Auto Finance &middot; Summer 2026</p>
+        <p>I spent the summer taking apart processes that ran on somebody's memory and rebuilding them so they ran on their own. The payroll one was the big one: INDEX/MATCH, VLOOKUP, macros and validation controls replaced a monthly copy and paste job and saved more than five hours a month.</p>
+        <p>I also built Microsoft Forms and Power Automate workflows for employee rewards and tuition reimbursement, gave offer letter intake a standard set of templates, and went through Teams and SharePoint permissions clearing out access nobody needed. It added up to roughly 11 hours saved every month.</p>
+      </div>
+
+      <div class="exp">
+        <h3>Teacher</h3>
+        <p class="when">Oxford Learning Centres &middot; May 2025 to now</p>
+        <p>I teach math and science in groups of three, across the Ontario, AP and IB curricula. The part I did not expect to matter is how differently three students in the same room can need the same idea explained.</p>
+        <p>I write the lesson plans and the test review material myself, aimed at what students actually get tested on rather than at covering the whole book.</p>
+      </div>
+
+      <div class="exp">
+        <h3>Co-founder &amp; Tutor</h3>
+        <p class="when">Milton IB Tutors &middot; 2023 to 2025</p>
+        <p>A friend and I started a tutoring business for grades 1 to 12 in the Ontario and IB curricula, and ran it for close to two years. It grew to more than 12 active students.</p>
+        <p>Teaching was the easy half. Invoicing, scheduling, finding clients and keeping them was the half that taught me something, and it is the reason I am comfortable running my own projects now.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="outside">
+  <div class="wrap">
+    <div class="outside-grid">
+      <div>
+        <p class="eyebrow">Away from the bench</p>
+        <h2 class="big" style="max-width:16ch">Outside of work</h2>
+        <p>Basketball and volleyball most of the year, soccer with whoever is free, and golf badly. A lot of weekends go to things my community runs: food drives, blood drives, digging driveways out after a storm. The rest of the time I am camping, travelling, or being talked into something like jumping out of a plane.</p>
+        <p><a class="more" href="#life">See the rest</a></p>
+      </div>
+      <div class="figrow teaser">
+        <figure><img src="img/ow-volley.jpg" alt="Tossing the ball for a jump serve in a school gym, in a green volleyball jersey and knee pads."></figure>
+        <figure><img src="img/ow-shovel.jpg" alt="Several people clearing a driveway and front lawn after a heavy snowfall."></figure>
+        <figure><img src="img/ow-alpaca.jpg" alt="Sitting on a hillside above a Peruvian valley with an alpaca beside me."></figure>
+        <figure><img src="img/ow-skydive.jpg" alt="Tandem skydive in freefall, goggles on, throwing a shaka at the camera."></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="closing" id="contact">
+  <div class="wrap">
+    <p class="eyebrow">Get in touch</p>
+    <h2>Building something? Tell me about it.</h2>
+    <p>I'm looking for co-op and internship work in embedded systems, robotics and automation.</p>
+    <div class="channels">
+      <div class="ch">
+        <span class="lbl">Email</span>
+        <span class="val">sanawar.j@gmail.com</span>
+      </div>
+      <div class="ch">
+        <span class="lbl">LinkedIn</span>
+        <a class="val" href="https://www.linkedin.com/in/sanawar-javaid">linkedin.com/in/sanawar-javaid</a>
+      </div>
+      <div class="ch">
+        <span class="lbl">GitHub</span>
+        <a class="val" href="https://github.com/sanawarjm">github.com/sanawarjm</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /home -->
+
+<!-- ============================ CLEO ============================ -->
+<div id="view-cleo" hidden>
+  <div class="dhead">
+    <div class="wrap narrow">
+      <a class="back" href="#projects">Back to projects</a>
+      <p class="when">BearHacks 2026 &middot; May 2026 &middot; 72 hours</p>
+      <h1>Cleo</h1>
+      <p class="lede">An autonomous quadruped that hears you, looks at the room, and decides what to do.</p>
+      <p class="stack">Python &middot; Raspberry Pi &middot; OpenCV &middot; Whisper &middot; Autodesk Inventor</p>
+    </div>
+  </div>
+
+  <section style="padding-top:0"><div class="wrap narrow prose">
+    <figure class="wide"><img src="img/cleo-photo.jpg" alt="Cleo standing on a carpet: four white printed legs with servos at hip and knee, a Raspberry Pi in a red case, a webcam, and a small OLED showing a face."><figcaption>Hour 72</figcaption></figure>
+
+    <h3>What it does</h3>
+    <p>You talk to Cleo and it answers, then acts. A USB microphone picks up the instruction, Whisper turns it into text on the Pi itself, and a camera frame goes through an object detector at the same time. A language model takes both and returns the next action as structured output, which the gait code turns into movement across eight servos.</p>
+    <p>Everything in that loop runs on the robot. The speech recognition is offline and needs no API key, and the object detection runs locally. Unplug the network and Cleo still hears you and still walks.</p>
+
+    <h3>Seventy-two hours</h3>
+    <p>We started with nothing printed and no code written. What follows is roughly the order it happened in.</p>
+
+    <div class="carousel" data-carousel>
+      <div class="track" tabindex="0" aria-label="Build sequence, use arrow keys">
+        <figure>
+          <img src="img/cleo-b01.jpg" alt="A laptop on a cluttered desk showing the quadruped assembly in Autodesk Inventor, body in white and legs in orange.">
+          <figcaption><span class="step">Hour 01</span>The whole robot existed in Inventor before a single part went on the printer.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/cleo-b02.jpg" alt="A monitor showing a 2D drawing of a chassis part with dimensions, a laptop below running the same CAD file.">
+          <figcaption><span class="step">Hour 04</span>Detailing the frame. Every bracket had to hold a servo square or the gait would limp.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/cleo-b03.jpg" alt="A wide view of the build space: a table top covered in components, tool boxes, two laptops and a monitor.">
+          <figcaption><span class="step">Hour 09</span>The table, before it got worse.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/cleo-b04.jpg" alt="Working on a small servo by hand at the desk, with the CAD model open on the laptop beside it.">
+          <figcaption><span class="step">Hour 18</span>First servos into printed brackets, checking the fit against the model.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/cleo-b05.jpg" alt="Soldering at a low table with a soldering station and tool case open.">
+          <figcaption><span class="step">Hour 26</span>Soldering the power harness.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/cleo-b06.jpg" alt="Probing a component with a multimeter on the floor, servos and driver boards spread out alongside.">
+          <figcaption><span class="step">Hour 34</span>Eight servos and a Pi off one supply. This is where the buck converter came in.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/cleo-b07.jpg" alt="Sitting on the floor beside the half-assembled robot, laptop open, wiring spread across the carpet.">
+          <figcaption><span class="step">Hour 48</span>Integration on the floor, because the table had run out.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/cleo-b08.jpg" alt="The robot on the carpet with all four legs attached and the OLED face lit.">
+          <figcaption><span class="step">Hour 58</span>Standing on its own for the first time.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/cleo-b09.jpg" alt="The finished robot photographed head on, webcam centred and the OLED face showing two square eyes.">
+          <figcaption><span class="step">Hour 66</span>Face, camera, mic, speaker. Everything on one I&sup2;C bus.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/cleo-b10.jpg" alt="Demo table at the hackathon venue: a laptop showing the Cleo title slide, the robot in front of two screens, a numbered judging card beside it.">
+          <figcaption><span class="step">Hour 72</span>Demo table.</figcaption>
+        </figure>
+      </div>
+      <div class="cbar">
+        <button type="button" class="cprev" aria-label="Previous">&larr;</button>
+        <button type="button" class="cnext" aria-label="Next">&rarr;</button>
+        <span class="rail"><i></i></span>
+        <span class="count">01 / 10</span>
+      </div>
+    </div>
+
+    <h3>Seeing and hearing at the same time</h3>
+    <p>The interesting engineering is in how those two inputs meet. The camera does not tell the model what is in the room in pixels. It runs MobileNet SSD locally, reduces the frame to a list of labels and rough positions, and hands over something like "person, centre; bottle, right". The model gets that alongside whatever you just said, and returns one action.</p>
+    <p>Keeping the vision output small is what made the whole thing fit on a Pi. A description of the scene is a few dozen characters. An image is a few hundred kilobytes and a round trip we did not have time for.</p>
+
+    <figure class="wide"><img src="img/cleo-running.jpg" alt="A monitor showing the annotated camera feed with detection boxes around a person and a bottle, beside a terminal window logging the conversation, with the robot on the desk below."><figcaption>Detections on the left, the decision log on the right</figcaption></figure>
+
+    <h3>The face</h3>
+    <p>A small OLED on the front shows a face that changes with what the robot is doing: idle, thinking, searching, happy, surprised. Each state has several variants that cycle at random, so it never looks the same twice in a row.</p>
+    <p>It sounds like decoration and it is the most useful thing we built. Speech recognition takes a second or two on a Pi, and in that gap a silent robot looks broken. A robot with a thinking face looks like it is thinking. People stopped repeating themselves once the face went in.</p>
+
+    <div class="figrow">
+      <figure><img src="img/cleo-face.jpg" alt="Close view of the OLED display showing two square eyes and a small mouth, mounted above the webcam."><figcaption>Idle</figcaption></figure>
+      <figure class="doc"><img src="img/cleo-cad.jpg" alt="The Inventor assembly showing the body, internal frame and the four printed leg linkages."><figcaption>The assembly it came from</figcaption></figure>
+    </div>
+
+    <h3>How it is put together</h3>
+    <div class="facts">
+      <div class="row"><div class="k">Computer</div><div class="v">Raspberry Pi, 5V supply shared with the servo rail</div></div>
+      <div class="row"><div class="k">Locomotion</div><div class="v">Eight MG90S servos, hip and knee per leg, creep gait</div></div>
+      <div class="row"><div class="k">Servo driver</div><div class="v">PCA9685 PWM over I&sup2;C at 0x40</div></div>
+      <div class="row"><div class="k">Vision</div><div class="v">MobileNet SSD through OpenCV DNN, 20 classes, on device</div></div>
+      <div class="row"><div class="k">Speech in</div><div class="v">faster-whisper, tiny.en, fully offline</div></div>
+      <div class="row"><div class="k">Speech out</div><div class="v">gTTS through a USB speaker</div></div>
+      <div class="row"><div class="k">Face</div><div class="v">SSD1306 OLED, 128 by 64, at 0x3C</div></div>
+      <div class="row"><div class="k">Sensors</div><div class="v">DHT11 on GPIO 27, PIR on GPIO 17</div></div>
+      <div class="row"><div class="k">Gait</div><div class="v">20&deg; hip swing, 30&deg; knee lift, 0.15 s between phases</div></div>
+      <div class="row"><div class="k">Detection</div><div class="v">0.5 confidence threshold, 640 by 480 capture</div></div>
+    </div>
+
+    <h3>Operating modes</h3>
+    <p>Cleo scans for attached sensor modules at boot and starts in whichever mode matches what it finds. You can switch at any time by saying so, because the language model reads the intent rather than matching a fixed phrase. Saying "go into security mode" and "keep an eye on the room" both land in the same place.</p>
+    <ul>
+      <li><strong>General.</strong> No sensor module attached. Conversational.</li>
+      <li><strong>Security.</strong> Starts when the PIR sensor is present. Patrols and watches for movement.</li>
+      <li><strong>Environment.</strong> Starts when the DHT11 is attached. Reports temperature and humidity and flags anything unusual.</li>
+      <li><strong>Search and rescue.</strong> Voice command only. Sweeps an area looking for people.</li>
+    </ul>
+    <p>There is also a manual mode for demos, driven from a keyboard with a live annotated camera window: W to step forward, A and D to turn, space to ask what it currently sees. That mode exists because a hackathon judging table is a bad place to rely on voice recognition.</p>
+
+    <h3>What I would fix</h3>
+    <p>Whisper takes a second or two on a Pi after you stop talking, which is long enough that people repeat themselves even with the thinking face. MobileNet SSD only knows 20 object classes, so anything outside that list is invisible to the robot. The chat history lives in memory and resets when the mode changes, which means Cleo forgets what you told it the moment you switch. Text to speech needs the internet, so the one part of the loop that is not offline is the part that talks back.</p>
+    <p>None of these were worth solving inside 72 hours. All four are the first things I would pick up if I went back to it.</p>
+
+    <h3>Why it is open source</h3>
+    <p>We wrote it as boilerplate rather than a one-off. The servo and display layers can run in a mock mode that prints instead of driving hardware, so someone with a Pi and a webcam and none of the rest of it can still get the voice and vision loop working. The point was that the next person starts from a robot that already stands up.</p>
+
+    <div class="mosaic">
+      <img class="m1" src="img/cleo-b03.jpg" alt="The build table covered in components, tools and laptops.">
+      <img class="m2" src="img/cleo-b05.jpg" alt="Soldering the power harness at a low table.">
+      <img class="m3" src="img/cleo-b06.jpg" alt="Probing a component with a multimeter, boards and servos on the floor.">
+      <img class="m4" src="img/cleo-b04.jpg" alt="Fitting a servo by hand with CAD open on the laptop.">
+      <img class="m5" src="img/cleo-b07.jpg" alt="Sitting on the floor beside the half-built robot.">
+      <img class="m6" src="img/cleo-b10.jpg" alt="The demo table at the venue with the title slide and the robot.">
+      <img class="m7" src="img/cleo.jpg" alt="The robot on the carpet from a low angle, wiring across the top deck.">
+    </div>
+
+    <div class="outlinks"><a href="https://github.com/angelo-riv/cleo">Source on GitHub</a></div>
+
+    <div class="nextup"><p class="lbl">Next project</p><a href="#unlockable">Unlockable</a></div>
+  </div></section>
+</div>
+
+<!-- ============================ UNLOCKABLE ============================ -->
+<div id="view-unlockable" hidden>
+  <div class="dhead">
+    <div class="wrap narrow">
+      <a class="back" href="#projects">Back to projects</a>
+      <p class="when">McMaster 2TA4 &middot; March 2026</p>
+      <h1>Unlockable</h1>
+      <p class="lede">A PIN based door lock on an ESP32, with the whole security model drawn as a state machine before any firmware existed.</p>
+      <p class="stack">C++ &middot; ESP32 &middot; Mealy FSM &middot; Servo &middot; I&sup2;C</p>
+    </div>
+  </div>
+
+  <section style="padding-top:0"><div class="wrap narrow prose">
+    <figure class="wide"><img src="img/ul-door.jpg" alt="The prototype taped to a door: a breadboard with the ESP32 and three lit red LEDs, an LCD reading Enter Password, and a servo arm mounted on the frame."><figcaption>Mounted on a real door</figcaption></figure>
+
+    <h3>What it does</h3>
+    <p>Six buttons give you the digits 1 to 6. Enter four of them and the ESP32 compares what you typed against the stored PIN. If it matches, a 3 kHz tone plays and the servo swings the latch from 0&deg; to 90&deg;. If it does not, you get a 2 kHz tone, one of the three status LEDs goes out, and you have two tries left.</p>
+    <p>Three failures in a row puts the system into a 60 second lockout. The LCD switches to a countdown and ignores every button until the timer runs out. Once you are in, one button relocks the door and another starts a PIN change: confirm the old code, type a new one, done, with no reflashing.</p>
+
+    <h3>The state machine</h3>
+    <p>This is the part of the project I care about. I drew the diagram first, six states and every transition between them, and wrote the firmware against that drawing rather than the other way round.</p>
+    <figure class="wide doc"><img src="img/ul-fsm.jpg" alt="Hand drawn FSM diagram with six circled states: Initial Display, Locked, Timed Lockout, Unlocked, Change Password and Enter New Password, with transitions labelled in green for input and red for output."><figcaption>Green is the input, red is the output</figcaption></figure>
+    <p>It is a Mealy machine, so the outputs depend on the current state <em>and</em> on the button event that caused the transition, not on the state alone. Read any arrow on that diagram and you get both halves: "wrong password &times;3" going in, "Timed Lockout" coming out. What the LCD shows, which tone plays, where the servo sits and how many LEDs are lit all fall out of those pairs.</p>
+    <p>Writing it this way is why the lockout countdown updates smoothly without ever blocking. <code>millis()</code> gets sampled against the lockout start each time through the loop, so nothing sits in a <code>delay()</code> waiting for sixty seconds while the rest of the system goes deaf.</p>
+
+    <h3>Walking the diagram</h3>
+    <p>Ten frames from the demo, in the order they happen. Every state on that diagram gets visited except the two second splash at power on.</p>
+
+    <div class="carousel tall" data-carousel>
+      <div class="track" tabindex="0" aria-label="Demo sequence, use arrow keys">
+        <figure>
+          <img src="img/ul-01-latch.jpg" alt="The servo arm lying flat against the door frame, holding the latch closed, with the LCD lit below.">
+          <figcaption><span class="step">Locked</span>The arm sits flat against the frame. Nothing opens until four digits match.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/ul-02-entering.jpg" alt="A finger on a pushbutton, three red LEDs lit, the LCD reading Enter Password with masked characters.">
+          <figcaption><span class="step">Entering</span>Three lights, three attempts. Each digit shows as an asterisk.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/ul-03-granted.jpg" alt="The LCD reading ACCESS GRANTED, Press PB1 to lock, with the servo arm swung out away from the door frame.">
+          <figcaption><span class="step">Unlocked</span>Access granted, and the arm has swung clear of the frame. 3 kHz tone.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/ul-04-wrong.jpg" alt="The LCD reading Enter Password with only two red LEDs still lit.">
+          <figcaption><span class="step">One wrong</span>A light goes out. No warning, no explanation, just one fewer.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/ul-05-rejected.jpg" alt="The LCD reading WRONG PASSWORD with a single red LED still lit.">
+          <figcaption><span class="step">Two wrong</span>The reject message, 2 kHz tone, and one light left.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/ul-06-locked.jpg" alt="The LCD reading SYSTEM LOCKED above a countdown at 59 seconds, all status LEDs dark.">
+          <figcaption><span class="step">Lockout</span>Third failure. Sixty seconds, and the buttons stop meaning anything.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/ul-07-counting.jpg" alt="The LCD still reading SYSTEM LOCKED, the timer now showing eighteen seconds.">
+          <figcaption><span class="step">Counting</span>Eighteen left. The countdown never blocks the loop.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/ul-08-confirm.jpg" alt="The LCD reading Confirm Old Pass during a PIN change, three LEDs lit.">
+          <figcaption><span class="step">Change PIN</span>Unlocked, PB6 pressed. Prove you know the old code first.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/ul-09-newpin.jpg" alt="The LCD reading Enter New Pass with a finger over the keypad.">
+          <figcaption><span class="step">New PIN</span>Four digits, straight into memory. No reflashing.</figcaption>
+        </figure>
+        <figure>
+          <img src="img/ul-10-accepted.jpg" alt="The LCD reading ACCESS GRANTED, Press PB1 to lock, after the new PIN was accepted.">
+          <figcaption><span class="step">Accepted</span>Back to unlocked, now on a code that did not exist a minute ago.</figcaption>
+        </figure>
+      </div>
+      <div class="cbar">
+        <button type="button" class="cprev" aria-label="Previous">&larr;</button>
+        <button type="button" class="cnext" aria-label="Next">&rarr;</button>
+        <span class="rail"><i></i></span>
+        <span class="count">01 / 10</span>
+      </div>
+    </div>
+
+    <h3>The companion app</h3>
+    <p>The same state machine drives a phone app, so the lock can be operated without reaching for the keypad. It mirrors the hardware exactly rather than working around it: the same four digit entry, the same three attempts, the same sixty second lockout with the same countdown. A second interface that quietly allowed more tries would make the lock on the door a decoration.</p>
+    <div class="figrow four">
+      <figure class="doc"><img src="img/ul-app-entry.jpg" alt="Phone app headed Enter PIN, two of four digits filled, numeric keypad below and an Unlock button."><figcaption>Enter PIN</figcaption></figure>
+      <figure class="doc"><img src="img/ul-app-locked.jpg" alt="Phone app showing a closed padlock above the word Locked and the line The door is secured."><figcaption>Locked</figcaption></figure>
+      <figure class="doc"><img src="img/ul-app-lockout.jpg" alt="Phone app showing Locked Out, too many failed attempts, above a countdown reading twenty seconds remaining."><figcaption>Locked out</figcaption></figure>
+      <figure class="doc"><img src="img/ul-app-keypad.jpg" alt="Phone app headed Change PIN, asking for the current PIN with four digits filled and a Continue button."><figcaption>Change PIN</figcaption></figure>
+    </div>
+
+    <h3>Hardware</h3>
+    <div class="facts">
+      <div class="row"><div class="k">Controller</div><div class="v">ESP32</div></div>
+      <div class="row"><div class="k">Display</div><div class="v">DFRobot RGB LCD1602 over I&sup2;C at 0x6B</div></div>
+      <div class="row"><div class="k">Latch</div><div class="v">MG996R servo, 50 Hz, 500 to 2400 &micro;s pulse</div></div>
+      <div class="row"><div class="k">Input</div><div class="v">Six momentary pushbuttons on internal pull-ups, no external resistors</div></div>
+      <div class="row"><div class="k">Indicators</div><div class="v">Three red LEDs, active low, through 300 &Omega; resistors</div></div>
+      <div class="row"><div class="k">Audio</div><div class="v">Piezo buzzer, 3 kHz unlock and 2 kHz reject</div></div>
+      <div class="row"><div class="k">Power</div><div class="v">9V battery through a buck converter</div></div>
+      <div class="row"><div class="k">Pinout</div><div class="v">Servo 26. Buttons on 18, 19, 23, 25, 33, 32. LEDs 4, 5, 16. Buzzer 17. SDA 21, SCL 22</div></div>
+      <div class="row"><div class="k">Debounce</div><div class="v">250 ms guard between accepted presses</div></div>
+    </div>
+
+    <h3>The poster</h3>
+    <p>The course deliverable included a one page summary, which is a useful compression test: everything that matters about the build, at a size you can read across a room.</p>
+    <figure class="wide doc"><img src="img/ul-poster.jpg" alt="A project poster headed Unlockable Smart Door Lock, with sections for system overview, how it works, photographs of each component, the FSM diagram and a QR code to the video demo."><figcaption>Course poster</figcaption></figure>
+
+    <h3>Where it falls short</h3>
+    <p>These are the trade-offs I made for a course prototype, and I would rather list them than pretend they are not there.</p>
+    <ul>
+      <li>The PIN lives in RAM, so it goes back to 1234 on every power cycle. Writing it to NVS would fix that.</li>
+      <li>The LCD prints the default PIN at startup. Convenient for a demo, wrong for a lock.</li>
+      <li>The comparison runs digit by digit and stops early, so it is not constant time.</li>
+      <li>Button release is handled with blocking <code>while</code> loops, which stall the main loop briefly.</li>
+      <li>Only six digits are available, so the keyspace is 6&#8308;, or 1,296 combinations. A patient attacker with no lockout would be through in under an hour, which is exactly what the lockout is for.</li>
+    </ul>
+
+    <div class="outlinks">
+      <a href="https://github.com/sanawarjm/Unlockable">Source on GitHub</a>
+      <a href="https://youtube.com/shorts/GK7am2XnWW0">Hardware demo</a>
+      <a href="https://www.youtube.com/watch?v=GrHbliP2Q14">App demo</a>
+    </div>
+
+    <div class="nextup"><p class="lbl">Next project</p><a href="#audio-scale">Audio Scale</a></div>
+  </div></section>
+</div>
+
+<!-- ============================ AUDIO SCALE ============================ -->
+<div id="view-audio-scale" hidden>
+  <div class="dhead">
+    <div class="wrap narrow">
+      <a class="back" href="#projects">Back to projects</a>
+      <p class="when">McMaster 1P13 &middot; February to March 2025</p>
+      <h1>Audio Scale</h1>
+      <p class="lede">A kitchen scale that speaks the weight, designed for a client with combined vision and hearing loss.</p>
+      <p class="stack">Arduino &middot; C++ &middot; Load cell &middot; DFPlayer Mini &middot; 3D printing</p>
+    </div>
+  </div>
+
+  <section style="padding-top:0"><div class="wrap narrow prose">
+    <div class="figrow" style="margin-top:0">
+      <figure><img src="img/as-prototype.jpg" alt="The finished scale: a white weighing plate over a black enclosure with four large yellow textured buttons."><figcaption>Exterior of the final prototype</figcaption></figure>
+      <figure><img src="img/as-internals.jpg" alt="Inside the enclosure: an Arduino and breadboard wired to a load cell, with the four yellow printed button caps below."><figcaption>Internal electronics</figcaption></figure>
+    </div>
+
+    <h3>The brief</h3>
+    <p>Our client has Usher syndrome, which costs her both vision and hearing. She cooks constantly and can't read a digital kitchen scale. We had six weeks, limited prototyping resources, and a requirement that the whole thing be cheap enough to build from parts anyone can buy.</p>
+
+    <h3>The idea we dropped first</h3>
+    <p>Our first concept was a walking stick with obstacle detection: a camera, a speaker, high contrast colours, even glow in the dark surfaces. It was the more impressive design and I argued for it. It also needed a wireless link to a server, and our client had told us her hearing aids already use Bluetooth and that extra connections could interfere with them.</p>
+    <p>That one constraint killed it. Stepping back and looking at her actual day, cooking was the thing she loved and the thing she was losing to her vision, so we aimed at that instead. Choosing the smaller, less impressive idea turned out to be the best decision we made.</p>
+
+    <h3>How the five of us split it</h3>
+    <p>We divided the work by what each of us was actually good at rather than by slicing the project into equal parts. Some people took 3D modelling and speaker integration, others took physical prototyping, sensor calibration and circuit organisation. I took the button interface end to end.</p>
+    <p>That only works if people talk, because a mechanical change and an electrical change land on each other constantly. The enclosure had to have room for my breadboard. My button caps had to clear the weighing plate. We checked in often enough that neither of those turned into a rebuild.</p>
+
+    <h3>Designing it</h3>
+    <p>We used a morph chart to compare options in each part of the design. How would ingredients be held: a bowl, a funnel, a detachable tray? How would weight be measured: a load cell, a pressure sensor, a strain gauge? How would she control it: voice commands, physical buttons, LED indicators? Laying it out that way let us trade complexity against usability instead of guessing.</p>
+    <p>The design had to weigh without any visual display, speak the result as it changed, give her buttons she could find and press by feel, and survive spills. That last one sounds minor until you remember the thing lives on a kitchen counter.</p>
+
+    <h3>My part: the button interface</h3>
+    <p>I owned how she actually touches the scale, which meant the circuit, the firmware and the physical buttons.</p>
+    <ul>
+      <li><strong>The circuit.</strong> I wired the buttons to an Arduino on a breadboard and kept the layout compact enough to fit inside the final enclosure without a redesign.</li>
+      <li><strong>The firmware.</strong> I wrote the first version of the button code covering four functions: increase, decrease, tare and repeat the last reading. By the final prototype the first two had been repurposed into a power button and a unit conversion button, and tare and repeat stayed as they were.</li>
+      <li><strong>The caps.</strong> The stock tactile switches were tiny and hard to press, which is a problem when the user can't see them. I designed and printed larger yellow caps with different surface textures on each, so she could tell them apart by feel alone.</li>
+      <li><strong>Assembly.</strong> I tested the full loop from button to Arduino to serial output before we integrated the DFPlayer Mini for audio.</li>
+    </ul>
+    <p>I also presented our reasoning for picking the scale over the walking stick, walked through the testing results, and wrote half of the executive summary and half of the conceptual design section of the report.</p>
+
+    <div class="figrow">
+      <figure><img src="img/as-breadboard.jpg" alt="The button interface prototyped on a breadboard, four tactile switches wired back to an Arduino."><figcaption>Button interface on a breadboard</figcaption></figure>
+      <figure class="doc"><img src="img/as-sketch.jpg" alt="A hand drawn concept sketch in purple pen showing a funnel container clipped to a weighing plate, with the load cell, amplifier, speaker and DFPlayer labelled."><figcaption>My early concept sketch</figcaption></figure>
+    </div>
+
+    <h3>Why buttons and not a screen</h3>
+    <p>A few choices shaped everything else. Physical tactile buttons instead of a touchscreen or a companion app, because a flat glass surface gives you nothing to find with your hands. Distinct shapes and textures on each cap so they can be told apart by touch rather than by position. Audio feedback given priority over any visual indicator. And a load cell paired with an Arduino, because it measures reliably and integrates simply, which matters more than sophistication when the thing has to work every day.</p>
+
+    <h3>Testing it</h3>
+    <p>We tested accuracy by weighing known masses and comparing them against what the scale announced, and durability by running a displacement simulation of the enclosure under load. Percent error stayed low across most of the range, and it fell as the applied weight went up, which is the pattern you want on a kitchen scale where the interesting measurements aren't the tiny ones. The simulation showed minimal deformation under normal use.</p>
+    <p>The qualitative half was repeated hands-on use. The scale stayed stable, the buttons stayed responsive, and the audio came out consistently across trials.</p>
+
+    <div class="figrow">
+      <figure class="doc"><img src="img/as-fea.jpg" alt="A finite element displacement simulation of the scale enclosure, mostly blue with a band of red and green across the loaded top surface."><figcaption>Displacement under load</figcaption></figure>
+      <figure class="doc"><img src="img/as-error.jpg" alt="A line chart of percent error against actual weight, spiking near zero and flattening close to the axis beyond 300 grams."><figcaption>Measured weight against percent error</figcaption></figure>
+    </div>
+
+    <h3>Six weeks, in order</h3>
+    <p>We ran the project off a Gantt chart with weekly milestones, which mattered more than it sounds like it should. By week seven we had sourced the load cell and amplifier and had a first prototype doing the basic job of turning a weight into a number. The two weeks after that were integration: my button system went in, the audio module went in, and the second prototype became something you could hand to someone.</p>
+    <p>The last stretch was validation. Each function got tested on its own, then the whole thing assembled, then the pitch and the report. Leaving integration until the end would have been the obvious mistake and we managed to avoid it.</p>
+
+    <h3>What went wrong, and what fixed it</h3>
+    <p>The audio came out unclear in testing. The files we'd loaded onto the DFPlayer Mini were taking up too much storage and playing badly, and re-encoding them fixed it outright. It was the single change that improved the final product most, and we only caught it because we tested the audio early instead of at assembly.</p>
+
+    <h3>Where it ended up</h3>
+    <p>The final prototype has four tactile buttons with textured markers, a weighing plate mounted over the load cell, and a case that wipes clean. During the live presentation it measured accurately and spoke every reading without a hitch.</p>
+    <p>The lesson I took from it: I used to assume the best idea was the most engineered one. Now I think the best idea is the one that fits the person using it, and dropping an idea you like is often the step that gets you there.</p>
+
+    <h3>What I'd improve</h3>
+    <p>The enclosure should be a more durable, water resistant material. It lives on a kitchen counter and ours would not survive a year of that. The internal wiring could be far more compact, which would help both reliability and anyone trying to repair it. The audio needs work in a noisy kitchen, and the range of spoken units is narrower than it should be.</p>
+
+    <div class="nextup"><p class="lbl">Next project</p><a href="#wastewater">Wastewater Filtration</a></div>
+  </div></section>
+</div>
+
+<!-- ============================ WASTEWATER ============================ -->
+<div id="view-airport" hidden>
+  <div class="dhead">
+    <div class="wrap narrow">
+      <a class="back" href="#projects">Back to projects</a>
+      <p class="when">McMaster 1P13 &middot; October to December 2024</p>
+      <h1>Airport Baggage System</h1>
+      <p class="lede">A baggage handling system for a simulated international airport, mechanical and software together.</p>
+      <p class="stack">Python &middot; File I/O &middot; Autodesk Inventor &middot; Q-arm &middot; 3D printing</p>
+    </div>
+  </div>
+
+  <section style="padding-top:0"><div class="wrap narrow prose">
+    <div class="figrow" style="margin-top:0">
+      <figure class="doc"><img src="img/ap-cad.jpg" alt="The final CAD assembly: a black perforated frame carrying gears, a conveyor and a linear actuator, with two red-edged platforms."><figcaption>Final CAD assembly</figcaption></figure>
+      <figure class="doc"><img src="img/ap-plates.jpg" alt="The physical environment annotated in orange, marking Plate A at the top, the restriction line across the middle and Plate B at the far end."><figcaption>Plate A, the restriction line, Plate B</figcaption></figure>
+    </div>
+
+    <h3>The brief</h3>
+    <p>Baggage handling at airports is expensive and disorganised, and bags end up in the wrong place. We had to design a system that sorts luggage and moves it to the right destination quickly, with both a physical mechanism and the software driving it.</p>
+    <p>The constraints were geometric. Nothing could extend past a restriction line between the two plates when the ramp was retracted, every part had to stay inside a defined physical envelope, and the luggage had to arrive undamaged.</p>
+
+    <h3>What we built</h3>
+    <p>The mechanism pairs a conveyor belt turned by a rotary actuator with a scissor lift ramp extended by a linear actuator. The Python software drives a Q-arm for the precise handling and puts passenger and baggage data behind an interface you can actually read.</p>
+
+    <h3>The software side</h3>
+    <p>The team wrote three core functions between us. Mine tracked how many passengers on each plane had both "late" status and a layover, reading from a supplied data file. That meant file input and two dimensional lists, neither of which I had used before, and a fair amount of printing things out to find where my indices were wrong.</p>
+    <p>Debugging that function is what made the Q-arm work. The arm needed a lot of trial and error to position correctly, and by then I had a habit of checking my assumptions one line at a time instead of staring at the whole thing hoping to spot it.</p>
+
+    <h3>My part</h3>
+    <ul>
+      <li><strong>The ramp.</strong> Each of us designed a concept in Inventor and the team combined the strongest pieces. Mine was a linear actuator driving a scissor lift ramp to push luggage horizontally, and it became a core part of the final assembly.</li>
+      <li><strong>The software.</strong> I wrote the time delay function and the code that moves the Q-arm. Tracking passengers with late and layover status meant reading from a supplied file and building two dimensional lists, both new to me at the time.</li>
+      <li><strong>Printing.</strong> I took on 3D printing every part the mechanism needed, including reprinting a modified bracket after we found screws catching on the supports.</li>
+      <li><strong>Coordinating.</strong> As coordinator I called and recorded every meeting held outside our design studio sessions, and kept the logbook that documented them.</li>
+    </ul>
+
+    <div class="figrow">
+      <figure class="doc"><img src="img/ap-mine.jpg" alt="My individual CAD concept, a scissor lift ramp driven by a linear actuator mounted on the black frame beside two grey luggage blocks."><figcaption>My concept: the actuated ramp</figcaption></figure>
+      <figure class="doc"><img src="img/ap-code.jpg" alt="A Python function named time delay, documented with parameters and returns, looping through flight and passenger data to count late passengers with layovers."><figcaption>The time delay function</figcaption></figure>
+    </div>
+
+    <h3>Testing it</h3>
+    <p>We tested in two directions. Load simulations confirmed the structure held up under the weights we expected without deforming enough to matter. Then we ran the mechanism repeatedly to check that horizontal and vertical transport both stayed smooth, and that nothing crossed the restriction boundary when the ramp was retracted. Watching it run is how we found the screws catching on the supports, which no simulation would have told us.</p>
+
+    <h3>The choices that shaped it</h3>
+    <p>Separating horizontal from vertical motion is the decision the whole design rests on. Once the conveyor owned lifting and the ramp owned reaching, both could be tuned for one job and the restriction line stopped being a problem. We picked actuator-driven mechanisms over anything more improvised because they repeat the same motion precisely, and precision was worth more to us than saving weight.</p>
+
+    <h3>Keeping the team on the same page</h3>
+    <p>As coordinator I called and recorded every meeting that happened outside our design studio sessions, and kept a logbook of all of it: the date, where we met, and what actually got decided. Some of those entries are the project's real history. Meeting at Thode because three of our biggest parts were going to take longer to print than our studio time allowed. Finishing one function in the evening after the other two were done in studio. Booking extra test time before the interview so we could find problems while there was still room to fix them.</p>
+    <p>I had never kept a record like that before and assumed it was paperwork. It made me pay closer attention, and the log got more useful the more involved I became.</p>
+
+    <h3>The problem that took longest</h3>
+    <p>My ramp moved luggage horizontally across one plane. It couldn't lift. We needed movement in two dimensions and I had solved one of them, which took the team a while to work around. The answer was to add the conveyor belt for vertical travel and leave the ramp doing what it was good at, pushing bags past the restriction line.</p>
+
+    <h3>What I took from it</h3>
+    <p>Keeping the logbook was new to me and I expected it to be busywork. It made me pay closer attention to what the team was actually doing, and the record got better because I was more involved. The harder lesson was time management. We ran out of design studio hours for 3D printing and had to find the Thode makerspace instead, and the team code and report both came together in a last minute push. We got there, but the stress was self-inflicted and avoidable.</p>
+
+    <h3>What I'd improve</h3>
+    <p>The mechanical tolerances are loose enough to cause friction we didn't need, and tightening them is the first thing I'd do. Actuator response time is the next, since a lot of the cycle is spent waiting. On the software side the sorting logic works but isn't quick, and it would take real rewriting rather than tuning. All of that assumes more physical testing than eight weeks allowed.</p>
+
+    <div class="nextup"><p class="lbl">Next project</p><a href="#cleo">Cleo</a></div>
+  </div></section>
+</div>
+
+<div id="view-wastewater" hidden>
+  <div class="dhead">
+    <div class="wrap narrow">
+      <a class="back" href="#projects">Back to projects</a>
+      <p class="when">McMaster 1P13 &middot; January to February 2025</p>
+      <h1>Wastewater Filtration</h1>
+      <p class="lede">Removing ciprofloxacin from hospital wastewater for a rural hospital in Byron Bay, under Australian discharge rules.</p>
+      <p class="stack">Granta EduPack &middot; MPI derivation &middot; Ashby charts &middot; Eco-audit</p>
+    </div>
+  </div>
+
+  <section style="padding-top:0"><div class="wrap narrow prose">
+    <div class="figrow" style="margin-top:0">
+      <figure class="doc"><img src="img/ww-mpi.jpg" alt="Handwritten derivations headed MPI Strength, working from mass and stress relationships toward an index to maximise."><figcaption>Deriving the performance index</figcaption></figure>
+      <figure class="doc"><img src="img/ww-ashby.jpg" alt="An Ashby chart plotting Young's modulus against density, with coir fibre marked near guide lines across the material bubbles."><figcaption>Checking coir fibre on an Ashby chart</figcaption></figure>
+    </div>
+
+    <h3>The brief</h3>
+    <p>Design a filtration system that pulls ciprofloxacin, a pharmaceutical pollutant, out of hospital wastewater. The site was a rural hospital in Byron Bay, Australia, where discharge regulations are strict. The system had to survive being wet all the time, draw very little energy, comply with Australian environmental law, and stay affordable across its whole life rather than just at purchase.</p>
+
+    <h3>What we were bound by</h3>
+    <p>The constraints did most of the narrowing for us. The system sits in water permanently, so anything that degrades wet was out. It had to draw very little energy, because a rural hospital is not going to run a power hungry filter around the clock. It had to comply with Australian environmental law. And it had to be affordable across its whole life rather than just at purchase, which rules out cheap things that need replacing.</p>
+    <p>Against that, what we wanted: remove the ciprofloxacin effectively, use sustainable and recyclable materials, and keep the carbon footprint down.</p>
+
+    <h3>Narrowing the options</h3>
+    <p>We started with an objective tree to separate what we wanted from what we were bound by, then a morph chart to generate options for the filtration mechanism, flow control, degradation and monitoring.</p>
+    <p>The objective tree is the one I would keep. Writing "filter antibiotic disposal into clean water" at the top and then forcing every branch underneath to be a real sub-goal made it obvious which of our ideas were goals and which were just features we liked.</p>
+    <p>My research covered three filtration approaches: deep-bed, membrane-based and electro filtration. Comparing them is what pointed the team toward membrane-based systems as the most effective and economical way to catch ciprofloxacin specifically, and it cut several branches off the morph chart.</p>
+
+    <div class="figrow">
+      <figure class="doc"><img src="img/ww-objtree.jpg" alt="An objective tree branching from filtering antibiotic disposal into clean water down through cost, environmental, filtration and usability goals."><figcaption>Objective tree</figcaption></figure>
+      <figure class="doc"><img src="img/ww-morph.jpg" alt="A morph chart table listing means for removing contaminants, regulating flow, monitoring ciprofloxacin levels and degrading antibiotics."><figcaption>Morph chart</figcaption></figure>
+    </div>
+
+    <h3>The material analysis</h3>
+    <p>This was my main technical contribution. We screened materials in Granta EduPack against four criteria: cost, carbon footprint, stiffness and strength. That got us to a shortlist of concrete, cement and coir fibre.</p>
+    <ul>
+      <li><strong>Deriving the indices.</strong> I derived and applied the Material Performance Index equations for our case, working from strength to density ratios and adjusting for cost and carbon footprint so we were ranking on sustainability as well as performance. I ran the equivalent derivation for stiffness.</li>
+      <li><strong>Porosity.</strong> A filter is full of holes, so the bulk material properties are the wrong numbers to use. I estimated pores per unit volume, calculated pore and fibre volume, and from those worked out the effective Young's modulus and yield strength. Coir fibre held up mechanically at around 10% porosity.</li>
+      <li><strong>Checking the answer.</strong> I rebuilt the Ashby chart using the porosity-adjusted values to confirm coir fibre still landed in the acceptable region for stiffness against density. It did, which is what let us commit to it.</li>
+    </ul>
+    <p>We ran a weighted decision matrix over the shortlist, scoring each material on cost, environmental friendliness, filtration effectiveness and sustainability. Coir fibre took 19 points against 10 for cement and 9 for concrete, which is not a close result. It's naturally porous, has a low footprint, and is cheap because it's a byproduct of agricultural waste. We checked the design against the Environment Protection and Biodiversity Conservation Act and the Sustainable Procurement Guide to confirm it met national standards.</p>
+
+    <div class="figrow">
+      <figure class="doc"><img src="img/ww-matrix.jpg" alt="A simple decision matrix scoring concrete, coir fibre and cement on cost, environmental friendliness, filtration and sustainability, totalling 9, 19 and 10."><figcaption>Weighted decision matrix</figcaption></figure>
+      <figure class="doc"><img src="img/ww-ecoaudit.jpg" alt="Eco-audit bar charts and a table breaking energy and carbon across material, manufacture, transport, use and disposal, with transport dominating both."><figcaption>Eco-audit for coir fibre</figcaption></figure>
+    </div>
+
+    <h3>The eco-audit surprise</h3>
+    <p>Almost all of the energy and carbon in the coir fibre option came from transporting it. Transport accounted for 94.6% of the energy and 93.9% of the CO2, against essentially nothing for use and disposal. That wasn't what we expected and it forced us to re-run the comparison properly rather than assume the natural material won by default. It still came out ahead once we weighed the full picture, and the life cycle analysis confirmed it's recyclable and biodegradable at end of life. If the design were built for real, sourcing the fibre locally is the single change that would matter most.</p>
+
+    <h3>What I took from it</h3>
+    <p>I went in assuming concrete or cement would win, because coir fibre looks like a handful of string. Reading into recyclability and environmental impact changed my mind, and that changed what I think a good solution means. It was also the first project where government regulation was part of the design rather than a box to tick afterwards. If I did it again I'd read the Australian standards in week one instead of week four.</p>
+
+    <div class="nextup"><p class="lbl">Next project</p><a href="#airport">Airport Baggage System</a></div>
+  </div></section>
+</div>
+
+<!-- ============================ AIRPORT ============================ -->
+<!-- ======================== OUTSIDE OF WORK ======================== -->
+<div id="view-life" hidden>
+  <div class="dhead">
+    <div class="wrap narrow">
+      <a class="back" href="#outside">Back to the main page</a>
+      <p class="when">Away from the bench</p>
+      <h1>Outside of work</h1>
+      <p class="lede">A court, a team, a driveway that needs clearing, and a few trips somebody else planned better than I would have.</p>
+    </div>
+  </div>
+
+  <section style="padding-top:0"><div class="wrap">
+
+    <div class="life">
+      <h3>Sports</h3>
+      <p>Basketball and volleyball are the two I keep going back to. Soccer is pickup with whoever answers the group chat. Golf came last and is going slowly.</p>
+      <div class="figrow life-row">
+        <figure><img src="img/ow-bball-ball.jpg" alt="Holding a basketball at the top of the key in a gym while two other players close in."><figcaption>Basketball</figcaption></figure>
+        <figure><img src="img/ow-volley.jpg" alt="Mid jump serve in a school gym, ball tossed overhead, green jersey and knee pads."><figcaption>Volleyball</figcaption></figure>
+        <figure><img src="img/ow-soccer-nt.jpg" alt="A dozen players in assorted club shirts lined up arm in arm on a floodlit parking lot after a night game."><figcaption>Soccer</figcaption></figure>
+        <figure><img src="img/ow-golf.jpg" alt="Mid follow-through on a tee shot, looking down a wide fairway toward a treeline."><figcaption>Golf</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="life">
+      <h3>Community Work</h3>
+      <p>A lot of my weekends go to things my community puts on. Food drives, blood drives, and digging out whoever got buried worst in the last storm. None of it is complicated. It mostly needs people who turn up.</p>
+      <div class="figrow life-row">
+        <figure><img src="img/ow-shovel.jpg" alt="Six people with shovels clearing a driveway and front lawn of a brick house buried in deep snow."><figcaption>Helping neighbors shovel</figcaption></figure>
+        <figure><img src="img/ow-supplies.jpg" alt="Nine of us standing in a snowy lot behind an open car boot packed with boxed and canned food."><figcaption>Food drive</figcaption></figure>
+        <figure><img src="img/ow-night-run.jpg" alt="A group on a residential street at dusk behind an open hatchback and a loaded wagon, going door to door for donations."><figcaption>Food drive</figcaption></figure>
+        <figure><img src="img/ow-blood.jpg" alt="Sitting in a donation chair with a line in one arm and the machine running beside it."><figcaption>Blood drive</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="life">
+      <h3>Travelling</h3>
+      <p>Peru was the big one. Cusco, the valley below it, and markets where I bought more than I could reasonably carry home. London was shorter and colder.</p>
+      <div class="figrow life-row">
+        <figure><img src="img/ow-alpaca.jpg" alt="Sitting on a dry hillside above a wide valley with an alpaca standing over one shoulder."><figcaption>Peru</figcaption></figure>
+        <figure><img src="img/ow-cusco.jpg" alt="A post of painted wooden direction arrows on a ridge, one reading Cusco, with mist over the mountains behind."><figcaption>Which way to Cusco</figcaption></figure>
+        <figure><img src="img/ow-london.jpg" alt="Standing on Westminster Bridge with Big Ben and the Houses of Parliament behind."><figcaption>Westminster</figcaption></figure>
+        <figure><img src="img/ow-phonebox.jpg" alt="Leaning against a red telephone box on a London street in front of a stone building."><figcaption>The obligatory photo</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="life">
+      <h3>Outdoor Adventures</h3>
+      <p>Camping with the same group most summers, waterfalls that justify the walk in, a season of snowboarding, and one jump out of a plane that I would do again.</p>
+      <div class="figrow life-row">
+        <figure><img src="img/ow-camp.jpg" alt="A campsite at dusk: a green tent, a folding table with a grill and a cooler, friends sitting around it."><figcaption>Camping</figcaption></figure>
+        <figure><img src="img/ow-falls.jpg" alt="Sitting on a rock beside a waterfall running through a wooded gorge at the end of a hike."><figcaption>Hiking</figcaption></figure>
+        <figure><img src="img/ow-skydive.jpg" alt="Tandem skydive in freefall, goggles on, throwing a shaka at the camera."><figcaption>Skydiving</figcaption></figure>
+        <figure><img src="img/ow-snowboard.jpg" alt="Five snowboarders lined up with their boards under the lights on a night run."><figcaption>Night runs</figcaption></figure>
+      </div>
+    </div>
+
+    <div class="life">
+      <h3>Everything else</h3>
+      <p>The rest of it, in no particular order.</p>
+      <div class="collage-grid">
+        <figure class="tall"><video src="img/cg-chip.mp4" poster="img/cg-chip-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Chipping onto the green from the fairway."></video></figure>
+        <figure><img src="img/ow-bball-game.jpg" alt="A basketball game in a school gym, a player in a white jersey driving along the baseline with the ball."></figure>
+        <figure><img src="img/ow-golf-2.jpg" alt="A second tee shot from the same course, club finished high over the shoulder."></figure>
+        <figure><img src="img/cg-soccer-team.jpg" alt="A soccer team in black jerseys lined up on an indoor turf pitch for a team photo."></figure>
+        <figure><img src="img/cg-crew.jpg" alt="Six of us in winter coats indoors, gloves and collection bags in hand, about to head out."></figure>
+        <figure><img src="img/ow-market.jpg" alt="In a market stall hung with woven blankets and bundles of dyed wool, wearing a knitted hat and scarf."></figure>
+        <figure><img src="img/ow-andes.jpg" alt="Standing on a ridge looking out over a wide Andean valley under a big sky."></figure>
+        <figure><img src="img/ow-waterfall.jpg" alt="A wide low waterfall spilling over a rock shelf into fast white water, trees and blue sky above."></figure>
+        <figure><img src="img/ow-land.jpg" alt="Walking back across the landing field in a harness with the instructors, canopy on the grass behind."></figure>
+        <figure><img src="img/cg-rock.jpg" alt="Standing on a limestone outcrop with both arms out, cloud and blue sky behind."></figure>
+        <figure><img src="img/cg-river.jpg" alt="Two people on a rocky shoreline beside clear shallow water under a wide sky."></figure>
+        <figure><img src="img/cg-beach.jpg" alt="Four of us standing on a wet beach at sunset, the sky orange over the water."></figure>
+        <figure class="tall"><video src="img/cg-ride.mp4" poster="img/cg-ride-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Strapped into an arcade ride under coloured lights."></video></figure>
+        <figure><img src="img/cg-picnic.jpg" alt="Five of us around a folding table of food at a wooded campsite, cars parked behind."></figure>
+        <figure><img src="img/cg-picnic2.jpg" alt="The same table from the other end, sandwiches and drinks spread across a checked cloth."></figure>
+        <figure><img src="img/cg-cards.jpg" alt="A card game spread out on a groundsheet by lantern light at night."></figure>
+        <figure><img src="img/cg-carrom.jpg" alt="A dozen people crowded around a carrom board in a room, mid game."></figure>
+        <figure><img src="img/cg-bowling.jpg" alt="A busy bowling alley, lanes and screens lit up in the dark."></figure>
+        <figure><img src="img/cg-booth.jpg" alt="A large group piled together in front of a ring light for a photo booth shot at a formal event."></figure>
+        <figure><img src="img/cg-cake.jpg" alt="A group in matching black kurtas cutting a Class of 2024 cake together."></figure>
+        <figure><img src="img/cg-moto.jpg" alt="Sitting on a touring motorcycle at a motor show stand under red and blue lights."></figure>
+        <figure><img src="img/cg-barbie.jpg" alt="Standing inside a life-size Barbie box display outside a brick building."></figure>
+        <figure><img src="img/cg-clash.jpg" alt="A Clash of Clans victory screen showing a three star war attack result."></figure>
+      </div>
+    </div>
+
+  </div></section>
+</div>
+
+</div>
+
+<footer>
+  <div class="wrap"><p>Sanawar J. Malik &middot; Milton, Ontario</p></div>
+</footer>
+
+<script>
+  (function () {
+    var views = ['home','cleo','unlockable','audio-scale','airport','wastewater','life'];
+    var anchors = { intro:1, experience:1, projects:1, outside:1, contact:1 };
+    var reduce = false;
+    try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+    function setView(name) {
+      views.forEach(function (v) {
+        var el = document.getElementById('view-' + v);
+        if (el) el.hidden = (v !== name);
+      });
+    }
+
+    function onHome() {
+      var el = document.getElementById('view-home');
+      return el && !el.hidden;
+    }
+
+    function glide(id, smooth) {
+      var t = document.getElementById(id);
+      if (!t) { window.scrollTo(0, 0); return; }
+      try {
+        t.scrollIntoView({ behavior: (smooth && !reduce) ? 'smooth' : 'auto', block: 'start' });
+      } catch (e) {
+        t.scrollIntoView();
+      }
+    }
+
+    function route() {
+      var h = (location.hash || '').replace(/^#/, '');
+      if (views.indexOf(h) !== -1 && h !== 'home') { setView(h); window.scrollTo(0, 0); return; }
+      setView('home');
+      if (anchors[h]) { glide(h, false); return; }
+      window.scrollTo(0, 0);
+    }
+
+    // Nav clicks scroll rather than jump, but only when the target is already
+    // on screen. Switching views first and then animating just looks broken.
+    Array.prototype.forEach.call(
+      document.querySelectorAll('.nav a[href^="#"]'),
+      function (a) {
+        a.addEventListener('click', function (e) {
+          var id = a.getAttribute('href').slice(1);
+          if (!onHome()) return;
+          if (id === 'home') {
+            e.preventDefault();
+            try { history.replaceState(null, '', '#home'); } catch (err) {}
+            try { window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); }
+            catch (err) { window.scrollTo(0, 0); }
+            return;
+          }
+          if (anchors[id]) {
+            e.preventDefault();
+            try { history.replaceState(null, '', '#' + id); } catch (err) {}
+            glide(id, true);
+          }
+        });
+      }
+    );
+
+    window.addEventListener('hashchange', route);
+    route();
+
+    // --- carousels -------------------------------------------------------
+    Array.prototype.forEach.call(document.querySelectorAll('[data-carousel]'), function (c) {
+      var track = c.querySelector('.track');
+      var slides = track.children;
+      var prev = c.querySelector('.cprev');
+      var next = c.querySelector('.cnext');
+      var count = c.querySelector('.count');
+      var fill = c.querySelector('.rail i');
+      var total = slides.length;
+      if (!total) return;
+
+      var cur = 0;
+      var settleAt = 0;
+
+      function pad(n) { return (n < 10 ? '0' : '') + n; }
+
+      function maxScroll() { return Math.max(0, track.scrollWidth - track.clientWidth); }
+
+      // With a peeking layout the last slides cannot reach the left edge, so
+      // their target is the end of the strip rather than their own offset.
+      // That keeps the strip flush at the end instead of trailing empty space.
+      function off(i) {
+        var raw = slides[i].offsetLeft - slides[0].offsetLeft;
+        return Math.min(raw, maxScroll());
+      }
+
+      // Where the scroll position actually sits. Only trusted once scrolling
+      // has settled, so a click sequence is not thrown off mid-animation.
+      function nearest() {
+        if (track.scrollLeft >= maxScroll() - 2) return total - 1;
+        var best = 0, min = Infinity;
+        for (var i = 0; i < total; i++) {
+          var d = Math.abs(off(i) - track.scrollLeft);
+          if (d < min) { min = d; best = i; }
+        }
+        return best;
+      }
+
+      function paint() {
+        count.textContent = pad(cur + 1) + ' / ' + pad(total);
+        fill.style.width = (100 / total) + '%';
+        fill.style.left = (cur * (100 / total)) + '%';
+        prev.disabled = cur <= 0;
+        next.disabled = cur >= total - 1;
+      }
+
+      // Scroll events fire all the way through a programmatic glide. Reading
+      // the position then would drag the index back to wherever the animation
+      // happens to be, so ignore them until it lands.
+      function sync() {
+        if (Date.now() < settleAt) return;
+        cur = nearest();
+        paint();
+      }
+
+      function go(dir) {
+        cur = Math.min(total - 1, Math.max(0, cur + dir));
+        paint();
+        settleAt = Date.now() + 700;
+        track.scrollTo({ left: off(cur), behavior: reduce ? 'auto' : 'smooth' });
+      }
+
+      prev.addEventListener('click', function () { go(-1); });
+      next.addEventListener('click', function () { go(1); });
+      track.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+      });
+
+      var tick;
+      track.addEventListener('scroll', function () {
+        clearTimeout(tick);
+        tick = setTimeout(sync, 60);
+      });
+
+      // The track has no width worth measuring until the images lay out, so
+      // re-run sync as they arrive and whenever the box changes size.
+      window.addEventListener('resize', sync);
+      window.addEventListener('load', sync);
+      Array.prototype.forEach.call(track.querySelectorAll('img'), function (img) {
+        if (!img.complete) img.addEventListener('load', sync, { once: true });
+      });
+      if (window.ResizeObserver) new ResizeObserver(sync).observe(track);
+      sync();
+    });
+
+    var btn = document.getElementById('copyBtn');
+    var email = document.getElementById('email');
+    if (btn && email) {
+      btn.addEventListener('click', function () {
+        var done = function () {
+          btn.textContent = 'Copied';
+          setTimeout(function () { btn.textContent = 'Copy'; }, 1800);
+        };
+        var fallback = function () {
+          try {
+            var r = document.createRange();
+            r.selectNodeContents(email);
+            var s = window.getSelection();
+            s.removeAllRanges(); s.addRange(r);
+            btn.textContent = 'Selected';
+            setTimeout(function () { btn.textContent = 'Copy'; }, 2200);
+          } catch (e) {}
+        };
+        try { navigator.clipboard.writeText(email.textContent.trim()).then(done, fallback); }
+        catch (e) { fallback(); }
+      });
+    }
+  })();
+</script>
+
+</body>
+</html>
